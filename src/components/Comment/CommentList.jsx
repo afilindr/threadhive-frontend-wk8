@@ -1,14 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Card, Button } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
+import {
+  downvoteCommentThunk,
+  upvoteCommentThunk,
+} from "../../reducers/commentSlice.js";
 import "./CommentList.css";
 
 export default function CommentList() {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.comments.comments);
 
-  const handleUpvote = (commentId) => {};
+  const handleUpvote = (commentId) => {
+    dispatch(upvoteCommentThunk(commentId));
+  };
 
-  const handleDownvote = (commentId) => {};
+  const handleDownvote = (commentId) => {
+    dispatch(downvoteCommentThunk(commentId));
+  };
 
   return (
     <div className="d-flex flex-column gap-3">

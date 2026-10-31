@@ -5,6 +5,11 @@ import {
   fetchThreadById,
   clearThread,
 } from "../../reducers/currentThreadSlice.js";
+import {
+  addComment,
+  clearComments,
+  fetchComments,
+} from "../../reducers/commentSlice.js";
 
 import ThreadCard from "../../components/ThreadList/ThreadCard";
 import CommentForm from "../../components/Comment/CommentForm";
@@ -24,20 +29,33 @@ export default function Thread() {
     loading: threadLoading,
     error: threadError,
   } = useSelector((state) => state.currentThread);
+  const {
+    comments: threadComments,
+    loading: commentsLoading,
+    error: commentsError,
+  } = useSelector((state) => state.comments);
 
   useEffect(() => {
     if (threadId) {
       dispatch(fetchThreadById(threadId));
+      dispatch(fetchComments(threadId));
     }
 
     return () => {
       dispatch(clearThread());
+      dispatch(clearComments());
     };
   }, [dispatch, threadId]);
 
-  const handlePostComment = () => {
+  const handlePostComment = async () => {
     if (!commentText.trim()) return;
-    setCommentText("");
+
+    const result = await dispatch(
+      addComment({ threadId, content: commentText.trim() }),
+    );
+    if (addComment.fulfilled.match(result)) {
+      setCommentText("");
+    }
   };
 
   if (threadError) {
