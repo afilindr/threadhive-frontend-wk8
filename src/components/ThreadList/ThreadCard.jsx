@@ -21,55 +21,57 @@ export default function ThreadCard({ thread, goBack }) {
   };
 
   return (
-    <Card className="single-thread-card">
-      <Card.Body>
-        {goBack && (
-          <Button
-            onClick={goBack}
-            variant="link"
-            size="sm"
-            className="back-to-home-btn text-decoration-none"
-          >
-            <i className="bi bi-arrow-left me-2"></i>Back to Home
-          </Button>
-        )}
+    <article className="single-thread-card">
+      <Card className="border-0">
+        <Card.Body>
+          {goBack && (
+            <Button
+              onClick={goBack}
+              variant="link"
+              size="sm"
+              className="back-to-home-btn text-decoration-none"
+              aria-label="Go back to previous page"
+            >
+              <i className="bi bi-arrow-left" aria-hidden="true"></i>Back to Home
+            </Button>
+          )}
 
-        <Row className="g-3">
-          {/* Voting UI */}
-          <Col xs="auto">
-            <Stack gap={2} className="text-center vote-column">
-              <VoteButtons
-                count={thread.voteCount}
-                onUpvote={handleUpvote}
-                onDownvote={handleDownvote}
-              />
-            </Stack>
-          </Col>
+          <Row className="g-3">
+            <Col xs="auto">
+              <Stack gap={2} className="text-center vote-column">
+                <VoteButtons
+                  count={thread.voteCount}
+                  onUpvote={handleUpvote}
+                  onDownvote={handleDownvote}
+                  ariaLabel={`thread "${thread.title}"`}
+                />
+              </Stack>
+            </Col>
 
-          {/* Thread content */}
-          <Col>
-            <h3 className="thread-title">{thread.title}</h3>
-            <p className="thread-content">{thread.content}</p>
+            <Col>
+              <h2 className="thread-title">{thread.title}</h2>
+              <p className="thread-content">{thread.content}</p>
 
-            <div className="d-flex gap-4 flex-wrap thread-meta">
-              <div className="d-flex align-items-center gap-2">
-                <i className="bi bi-person-circle thread-meta-icon"></i>
-                <span>
-                  <strong className="thread-meta-author">
-                    {thread.author?.name ?? "Unknown"}
-                  </strong>
-                </span>
+              <div className="d-flex gap-4 flex-wrap thread-meta">
+                <div className="d-flex align-items-center gap-2">
+                  <i className="bi bi-person-circle thread-meta-icon" aria-hidden="true"></i>
+                  <span>
+                    <strong className="thread-meta-author">
+                      {thread.author?.name ?? "Unknown"}
+                    </strong>
+                  </span>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <i className="bi bi-bookmark thread-meta-icon" aria-hidden="true"></i>
+                  <span className="badge thread-meta-badge">
+                    r/{thread.subreddit?.name ?? "unknown"}
+                  </span>
+                </div>
               </div>
-              <div className="d-flex align-items-center gap-2">
-                <i className="bi bi-bookmark thread-meta-icon"></i>
-                <span className="badge thread-meta-badge">
-                  r/{thread.subreddit?.name ?? "unknown"}
-                </span>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </article>
   );
 }

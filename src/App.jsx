@@ -51,7 +51,7 @@ function App() {
         <Header onToggleSidebar={toggleSidebar} />
         <div className="app-container">
           {token && <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />}
-          <main className="main-center-content">
+          <main className="main-center-content" role="main">
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/login" element={<Login />} />

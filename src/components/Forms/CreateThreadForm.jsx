@@ -44,7 +44,7 @@ export default function CreateThreadForm({ onClose }) {
     // Create new subreddit first if needed
     if (newSubredditName.trim()) {
       if (!newSubredditDescription.trim()) {
-        alert("Please provide a description for the new subreddit.");
+        alert("Please provide a description for the new community.");
         return;
       }
 
@@ -65,7 +65,7 @@ export default function CreateThreadForm({ onClose }) {
     }
 
     if (!subredditToUse) {
-      alert("Please select or create a subreddit before posting.");
+      alert("Please select or create a community before posting.");
       return;
     }
 
@@ -87,43 +87,54 @@ export default function CreateThreadForm({ onClose }) {
 
   return (
     <div className="create-thread-form px-0">
-      <h3 className="form-title">✏️ Create New Thread</h3>
+      <h2 className="form-title">
+        <i className="bi bi-pencil-square" aria-hidden="true"></i> Create New Thread
+      </h2>
       <Form onSubmit={handleSubmit}>
-        {/* Title */}
         <div className="form-group-custom">
-          <label className="form-label-custom">Thread Title</label>
+          <label className="form-label-custom" htmlFor="thread-title">Thread Title</label>
           <input
+            id="thread-title"
             type="text"
             className="form-control-custom"
             placeholder="What's on your mind?"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            aria-describedby="title-help"
           />
+          <Form.Text id="title-help" className="d-block mt-1 small">
+            Give your thread a clear, descriptive title
+          </Form.Text>
         </div>
 
-        {/* Content */}
         <div className="form-group-custom">
-          <label className="form-label-custom">Content</label>
+          <label className="form-label-custom" htmlFor="thread-content">Content</label>
           <textarea
+            id="thread-content"
             className="form-control-custom form-textarea-custom"
             rows={4}
             placeholder="Share your thoughts..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
+            aria-describedby="content-help"
           />
+          <Form.Text id="content-help" className="d-block mt-1 small">
+            Provide detailed content for your thread
+          </Form.Text>
         </div>
 
-        {/* Subreddit Selection */}
         <div className="form-group-custom">
-          <label className="form-label-custom">Community</label>
+          <label className="form-label-custom" htmlFor="subreddit-select">Community</label>
           {subreddits.length > 0 ? (
             <select
+              id="subreddit-select"
               className="form-control-custom"
               value={subredditId}
               onChange={(e) => handleSubredditSelect(e.target.value)}
               disabled={!!newSubredditName.trim()}
+              aria-describedby="subreddit-help"
             >
               <option value="">Select a community</option>
               {subreddits.map((sr) => (
@@ -135,11 +146,14 @@ export default function CreateThreadForm({ onClose }) {
           ) : (
             <p className="form-hint">No communities found.</p>
           )}
+          <Form.Text id="subreddit-help" className="d-block mt-1 small">
+            Choose an existing community for your thread
+          </Form.Text>
 
-          <div className="new-subreddit-section">
-            <label className="form-label-custom mb-2">
+          <fieldset className="new-subreddit-section mt-3">
+            <legend className="form-label-custom mb-2">
               Or Create New Community
-            </label>
+            </legend>
             <input
               type="text"
               className="form-control-custom mb-2"
@@ -151,7 +165,11 @@ export default function CreateThreadForm({ onClose }) {
               value={newSubredditName}
               onChange={(e) => handleNewSubredditChange(e.target.value)}
               disabled={!!subredditId}
+              aria-describedby="new-subreddit-help"
             />
+            <Form.Text id="new-subreddit-help" className="d-block mt-1 small">
+              Create a new community for your thread
+            </Form.Text>
             {newSubredditName && !subredditId && (
               <textarea
                 className="form-control-custom"
@@ -160,19 +178,21 @@ export default function CreateThreadForm({ onClose }) {
                 value={newSubredditDescription}
                 onChange={(e) => setNewSubredditDescription(e.target.value)}
                 required
+                aria-label="Community description"
               />
             )}
-          </div>
+          </fieldset>
         </div>
 
         <div className="form-actions">
           <button type="submit" className="form-btn form-btn-primary">
-            📝 Post Thread
+            <i className="bi bi-pencil-square" aria-hidden="true"></i> Post Thread
           </button>
           <button
             type="button"
             className="form-btn form-btn-secondary"
             onClick={onClose}
+            aria-label="Close create thread form"
           >
             Cancel
           </button>

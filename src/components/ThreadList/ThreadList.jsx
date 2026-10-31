@@ -22,32 +22,31 @@ export default function ThreadList({ threadsToDisplay }) {
   return (
     <Container fluid className="px-0">
       {threadsToDisplay.map((thread) => (
-        <div key={thread._id} className="thread-card">
+        <article key={thread._id} className="thread-card">
           <div className="thread-card-body">
-            {/* Voting Section */}
             <div className="vote-section">
               <VoteButtons
                 count={thread.voteCount}
                 onUpvote={() => handleUpvote(thread._id)}
                 onDownvote={() => handleDownvote(thread._id)}
+                ariaLabel={`thread "${thread.title}"`}
               />
             </div>
 
-            {/* Thread Info */}
             <div className="thread-content-section">
               <div className="thread-header">
-                <h5 className="thread-title">{thread.title}</h5>
-                <span className="subreddit-badge">
+                <h3 className="thread-title">{thread.title}</h3>
+                <span className="subreddit-badge" aria-label={`Community: r/${thread.subreddit?.name || "unknown"}`}>
                   r/{thread.subreddit?.name || "unknown"}
                 </span>
               </div>
               <p className="thread-text">{thread.content}</p>
-              <Link to={`/thread/${thread._id}`} className="view-thread-btn">
-                💬 View Comments
+              <Link to={`/thread/${thread._id}`} className="view-thread-btn" aria-label={`View comments for "${thread.title}"`}>
+                <i className="bi bi-chat-left-text" aria-hidden="true"></i> View Comments
               </Link>
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </Container>
   );

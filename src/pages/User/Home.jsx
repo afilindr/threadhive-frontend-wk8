@@ -17,19 +17,16 @@ export default function Home() {
 
   const [showForm, setShowForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("newest"); // 'newest' or 'most-upvoted'
+  const [sortBy, setSortBy] = useState("newest");
   const itemsPerPage = 5;
 
   const { threads, loading, error } = useSelector((state) => state.threads);
 
   const {
-    subreddits,
     subredditData,
     loading: subredditLoading,
-    error: subredditError,
   } = useSelector((state) => state.subreddits);
 
-  // Load initial threads or subreddit-specific threads
   useEffect(() => {
     if (subredditId) {
       dispatch(fetchSubredditThreads(subredditId));
@@ -39,7 +36,6 @@ export default function Home() {
     setCurrentPage(1);
   }, [subredditId, dispatch]);
 
-  // Get the display threads
   const displayThreads =
     subredditId && subredditData
       ? (subredditData.threads ?? []).map((thread) => ({
@@ -50,7 +46,6 @@ export default function Home() {
 
   const isLoading = subredditId ? subredditLoading : loading;
 
-  // Sort threads based on selected option
   const sortedThreads = [...displayThreads].sort((a, b) => {
     if (sortBy === "newest") {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -60,7 +55,6 @@ export default function Home() {
     return 0;
   });
 
-  // Pagination logic
   const totalPages = Math.ceil(sortedThreads.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -81,12 +75,12 @@ export default function Home() {
       <Container fluid className="home-content">
         <Card className="border-0 rounded-3 shadow-sm mb-3">
           <Card.Body className="p-3 p-md-4">
-            {/* Header with button */}
             <Row className="align-items-center mb-3">
               <Col>
                 <h1
                   className="fs-4 fs-md-3 fw-bold mb-1"
                   style={{ color: "var(--text-dark)" }}
+                  id="page-title"
                 >
                   {subredditData
                     ? `r/${subredditData.subreddit.name}`
@@ -113,18 +107,20 @@ export default function Home() {
                     borderColor: showForm ? undefined : "var(--primary-blue)",
                     fontWeight: "600",
                   }}
+                  aria-label={showForm ? "Close create thread form" : "Open create thread form"}
+                  aria-expanded={showForm}
+                  aria-controls="create-thread-form"
                 >
                   {showForm ? "✕ Close" : "➕ Create"}
                 </Button>
               </Col>
             </Row>
 
-            {/* Sorting Options */}
             <FilterSortBar sortBy={sortBy} onSortChange={handleSortChange} />
 
-            {/* Create Thread Form */}
             {showForm && (
               <Card
+                id="create-thread-form"
                 className="mb-3 shadow-sm border-0 rounded-3"
                 style={{ backgroundColor: "var(--bg-light)" }}
               >
@@ -134,13 +130,12 @@ export default function Home() {
               </Card>
             )}
 
-            {/* Thread states */}
             {isLoading ? (
               <Card.Text className="text-muted text-center py-4">
                 Loading threads...
               </Card.Text>
             ) : error ? (
-              <Card.Text className="text-danger text-center py-4">
+              <Card.Text className="text-danger text-center py-4" role="alert">
                 Error: {error}
               </Card.Text>
             ) : displayThreads && displayThreads.length > 0 ? (

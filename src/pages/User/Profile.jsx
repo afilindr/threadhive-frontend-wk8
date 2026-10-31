@@ -35,20 +35,21 @@ function Profile() {
         variant="link"
         className="profile-back-btn p-0"
         onClick={() => navigate("/home")}
+        aria-label="Go back to home page"
       >
-        ← Back to Home
+        <i className="bi bi-arrow-left" aria-hidden="true"></i> Back to Home
       </Button>
 
       <Card className="profile-card border-0 shadow-sm">
         <Card.Body className="profile-header">
           <div className="profile-avatar-section">
-            <div className="profile-avatar">
+            <div className="profile-avatar" aria-label={`Avatar for ${form.name ?? "User"}`}>
               {form.name?.charAt(0).toUpperCase() ?? "U"}
             </div>
           </div>
           <div className="profile-info-section">
             <div className="profile-title-row">
-              <h2 className="profile-name">{form.name ?? "User"}</h2>
+              <h1 className="profile-name">{form.name ?? "User"}</h1>
               <div>
                 {editing ? (
                   <>
@@ -57,15 +58,17 @@ function Profile() {
                       size="sm"
                       className="me-2"
                       onClick={handleSave}
+                      aria-label="Save profile changes"
                     >
-                      ✓ Save
+                      <i className="bi bi-check-circle" aria-hidden="true"></i> Save
                     </Button>
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => setEditing(false)}
+                      aria-label="Cancel editing profile"
                     >
-                      ✕ Cancel
+                      <i className="bi bi-x-circle" aria-hidden="true"></i> Cancel
                     </Button>
                   </>
                 ) : (
@@ -73,8 +76,9 @@ function Profile() {
                     variant="primary"
                     size="sm"
                     onClick={() => setEditing(true)}
+                    aria-label="Edit profile"
                   >
-                    ✏️ Edit Profile
+                    <i className="bi bi-pencil-square" aria-hidden="true"></i> Edit Profile
                   </Button>
                 )}
               </div>
@@ -113,7 +117,11 @@ function Profile() {
                 <div className="profile-field">
                   <div className="profile-field-label">Website</div>
                   <p className="profile-field-value">
-                    {form.website ?? (
+                    {form.website ? (
+                      <a href={form.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${form.website}`}>
+                        {form.website}
+                      </a>
+                    ) : (
                       <span className="empty">Not provided</span>
                     )}
                   </p>
@@ -123,31 +131,36 @@ function Profile() {
               <Form>
                 <Row>
                   <Col md={6} className="mb-3">
-                    <Form.Label className="profile-field-label">
+                    <Form.Label htmlFor="edit-name" className="profile-field-label">
                       Full Name
                     </Form.Label>
                     <Form.Control
+                      id="edit-name"
                       className="profile-form-control"
                       name="name"
                       value={form.name}
                       onChange={handleChange}
+                      aria-label="Edit full name"
                     />
                   </Col>
                   <Col md={6} className="mb-3">
-                    <Form.Label className="profile-field-label">
+                    <Form.Label htmlFor="edit-email" className="profile-field-label">
                       Email Address
                     </Form.Label>
                     <Form.Control
+                      id="edit-email"
                       className="profile-form-control"
                       name="email"
                       value={form.email}
                       disabled
                       title="Email cannot be changed"
+                      aria-label="Email address (cannot be changed)"
                     />
                   </Col>
                   <Col md={12} className="mb-3">
-                    <Form.Label className="profile-field-label">Bio</Form.Label>
+                    <Form.Label htmlFor="edit-bio" className="profile-field-label">Bio</Form.Label>
                     <Form.Control
+                      id="edit-bio"
                       className="profile-form-control"
                       as="textarea"
                       rows={3}
@@ -155,30 +168,35 @@ function Profile() {
                       value={form.bio}
                       onChange={handleChange}
                       placeholder="Tell us about yourself..."
+                      aria-label="Edit your bio"
                     />
                   </Col>
                   <Col md={6} className="mb-3">
-                    <Form.Label className="profile-field-label">
+                    <Form.Label htmlFor="edit-location" className="profile-field-label">
                       Location
                     </Form.Label>
                     <Form.Control
+                      id="edit-location"
                       className="profile-form-control"
                       name="location"
                       value={form.location}
                       onChange={handleChange}
                       placeholder="City, Country"
+                      aria-label="Edit your location"
                     />
                   </Col>
                   <Col md={6} className="mb-3">
-                    <Form.Label className="profile-field-label">
+                    <Form.Label htmlFor="edit-website" className="profile-field-label">
                       Website
                     </Form.Label>
                     <Form.Control
+                      id="edit-website"
                       className="profile-form-control"
                       name="website"
                       value={form.website}
                       onChange={handleChange}
                       placeholder="https://..."
+                      aria-label="Edit your website URL"
                     />
                   </Col>
                 </Row>

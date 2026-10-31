@@ -7,7 +7,6 @@ import "./Header.css";
 
 function Header({ onToggleSidebar }) {
   const navigate = useNavigate();
-  // Your Code Here
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
@@ -34,8 +33,12 @@ function Header({ onToggleSidebar }) {
     dispatch(toggleDarkMode());
   };
 
+  const handleLogoClick = () => {
+    navigate("/home");
+  };
+
   return (
-    <Navbar className="header-navbar shadow-sm">
+    <Navbar className="header-navbar shadow-sm" role="navigation" aria-label="Main navigation">
       <Container
         fluid
         className="header-container d-flex justify-content-between align-items-center"
@@ -45,14 +48,19 @@ function Header({ onToggleSidebar }) {
             <button
               className="hamburger-btn"
               onClick={onToggleSidebar}
-              aria-label="Toggle sidebar"
+              aria-label="Toggle sidebar navigation"
+              aria-expanded="false"
             >
               ☰
             </button>
           )}
-          <h1 className="header-logo" onClick={() => navigate("/home")}>
-            ThreadHive
-          </h1>
+          <button
+            onClick={handleLogoClick}
+            className="header-logo-btn"
+            aria-label="ThreadHive - Go to home"
+          >
+            <h1 className="header-logo">ThreadHive</h1>
+          </button>
         </div>
         <div className="d-flex align-items-center">
           <button
@@ -71,7 +79,7 @@ function Header({ onToggleSidebar }) {
                 onClick={handleProfileClick}
                 aria-label={`Open profile for ${user?.name ?? "User"}`}
               >
-                <div className="user-avatar">
+                <div className="user-avatar" aria-hidden="true">
                   {user?.name?.charAt(0).toUpperCase() ?? "U"}
                 </div>
                 <span className="user-name">{user?.name ?? "User"}</span>

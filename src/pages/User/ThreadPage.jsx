@@ -61,7 +61,7 @@ export default function Thread() {
   if (threadError) {
     return (
       <Container className="my-5">
-        <Alert variant="danger">{threadError}</Alert>
+        <Alert variant="danger" role="alert">{threadError}</Alert>
         <Button variant="secondary" onClick={() => navigate(-1)}>
           Go Back
         </Button>
@@ -83,7 +83,7 @@ export default function Thread() {
   if (!thread) {
     return (
       <Container className="my-5">
-        <Alert variant="warning">Thread not found</Alert>
+        <Alert variant="warning" role="alert">Thread not found</Alert>
         <Button variant="secondary" onClick={() => navigate(-1)}>
           Go Back
         </Button>
@@ -93,12 +93,10 @@ export default function Thread() {
 
   return (
     <Container className="thread-container">
-      {/* Thread Card */}
       <div className="mb-4">
         <ThreadCard thread={thread} goBack={() => navigate(-1)} />
       </div>
 
-      {/* Post Comment Input */}
       <CommentForm
         commentText={commentText}
         onCommentChange={(e) => setCommentText(e.target.value)}
@@ -106,15 +104,18 @@ export default function Thread() {
         disabled={!commentText.trim()}
       />
 
-      {/* Comments Section */}
-      <section className="mb-5">
+      <section className="mb-5" aria-labelledby="comments-header-title">
         <div className="d-flex align-items-center justify-content-between mb-4 px-2">
-          <h4 className="comments-header-title">💬 Comments</h4>
-          <span className="comments-count">{threadComments.length} total</span>
+          <h2 id="comments-header-title" className="comments-header-title">
+            <i className="bi bi-chat-left-text" aria-hidden="true"></i> Comments
+          </h2>
+          <span className="comments-count" role="status" aria-live="polite">
+            {threadComments.length} {threadComments.length === 1 ? 'comment' : 'comments'}
+          </span>
         </div>
 
         {commentsError && (
-          <Alert variant="danger" className="mb-3">
+          <Alert variant="danger" className="mb-3" role="alert" aria-live="polite">
             Error loading comments: {commentsError}
           </Alert>
         )}

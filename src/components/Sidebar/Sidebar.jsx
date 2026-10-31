@@ -15,15 +15,22 @@ function Sidebar({ isOpen, onClose }) {
     }
   };
 
+  const handleKeyDown = (e, path) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleNavigation(path);
+    }
+  };
+
   return (
     <>
       <div 
         className={`sidebar-overlay ${isOpen ? 'show' : ''}`}
         onClick={onClose}
+        aria-hidden="true"
       />
-      <aside className={`sidebar ${!isOpen ? 'mobile-hidden' : ''}`}>
+      <aside className={`sidebar ${!isOpen ? 'mobile-hidden' : ''}`} aria-label="Sidebar navigation">
         <Nav className="flex-column">
-          {/* Menu Section */}
           <div className="mb-4">
             <h6 className="text-uppercase fw-bold small mb-2 px-3" style={{ color: 'var(--text-muted)' }}>Menu</h6>
             <ListGroup variant="flush">
@@ -31,17 +38,25 @@ function Sidebar({ isOpen, onClose }) {
                 action
                 active={isActive("/home")}
                 onClick={() => handleNavigation("/home")}
+                onKeyDown={(e) => handleKeyDown(e, "/home")}
                 className="border-0 rounded mx-2"
+                role="button"
+                tabIndex="0"
+                aria-current={isActive("/home") ? "page" : undefined}
               >
-                🏠 Home
+                <i className="bi bi-house-fill" aria-hidden="true"></i> Home
               </ListGroup.Item>
               <ListGroup.Item 
                 action
                 active={isActive("/profile")}
                 onClick={() => handleNavigation("/profile")}
+                onKeyDown={(e) => handleKeyDown(e, "/profile")}
                 className="border-0 rounded mx-2"
+                role="button"
+                tabIndex="0"
+                aria-current={isActive("/profile") ? "page" : undefined}
               >
-                👤 Profile
+                <i className="bi bi-person-fill" aria-hidden="true"></i> Profile
               </ListGroup.Item>
             </ListGroup>
           </div>

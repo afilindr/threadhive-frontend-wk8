@@ -1,4 +1,4 @@
-import { Container, Card, Form, Button, Spinner } from "react-bootstrap";
+import { Container, Card, Form, Button, Spinner, Alert } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../reducers/authSlice.js";
@@ -36,7 +36,7 @@ function Login() {
       className="auth-container d-flex align-items-center justify-content-center"
     >
       <Card className="auth-card shadow-lg border-0 rounded-4 p-4 p-md-5">
-        <h2 className="auth-title">Login</h2>
+        <h1 className="auth-title">Login to ThreadHive</h1>
 
         <Form onSubmit={handleSubmit}>
           <Form.Floating className="mb-4">
@@ -49,10 +49,14 @@ function Login() {
               placeholder=" "
               required
               className="auth-form-control"
+              aria-describedby="email-help"
             />
             <label htmlFor="floatingEmail" className="auth-form-label">
-              Email
+              Email Address
             </label>
+            <Form.Text id="email-help" className="mt-1">
+              We'll never share your email
+            </Form.Text>
           </Form.Floating>
 
           <Form.Floating className="mb-4">
@@ -65,29 +69,44 @@ function Login() {
               placeholder=" "
               required
               className="auth-form-control"
+              aria-describedby="password-help"
             />
             <label htmlFor="floatingPassword" className="auth-form-label">
               Password
             </label>
+            <Form.Text id="password-help" className="mt-1">
+              Enter your secure password
+            </Form.Text>
           </Form.Floating>
 
-          {error && <div className="auth-error">{error}</div>}
+          {error && (
+            <Alert variant="danger" role="alert" aria-live="polite">
+              {error}
+            </Alert>
+          )}
 
           <Button
             type="submit"
             variant="primary"
             className="auth-submit-btn"
             disabled={loading}
+            aria-label="Submit login form"
           >
             {loading ? (
-              <Spinner as="span" animation="border" size="sm" role="status" />
+              <Spinner as="span" animation="border" size="sm" role="status" aria-label="Loading" />
             ) : (
               <>
-                <i className="bi bi-box-arrow-in-right me-2"></i>Login
+                <i className="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Login
               </>
             )}
           </Button>
         </Form>
+
+        <div className="mt-3 text-center">
+          <p className="mb-0 text-muted">
+            Don't have an account? <a href="/register" className="text-primary">Register here</a>
+          </p>
+        </div>
       </Card>
     </Container>
   );
