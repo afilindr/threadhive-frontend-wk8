@@ -12,12 +12,12 @@ const initialState = {
 // Async thunk
 export const fetchThreadById = createAsyncThunk(
   "currentThread/fetchById",
-  async (threadId, { rejectWithValue }) => {
+  async (threadId, thunkAPI) => {
     try {
       const thread = await fetchThreadByIdAPI(threadId);
       return thread;
     } catch (err) {
-      return rejectWithValue(handleApiError(err));
+      return thunkAPI.rejectWithValue(handleApiError(err));
     }
   },
 );
